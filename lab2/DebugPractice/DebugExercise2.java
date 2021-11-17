@@ -47,7 +47,7 @@ public class DebugExercise2 {
             return null;
         }
         int[] returnArray = new int[a.length];
-        for (int i = 0; i < a.length; i += 1) {
+         for (int i = 0; i < a.length; i += 1) {
             int biggerValue = max(a[i], b[i]);
             returnArray[i] = biggerValue;
         }
