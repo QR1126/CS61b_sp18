@@ -73,16 +73,11 @@ public class LinkedListDequeTest {
 	}
 
 	@Test
-	public void test2() {
-		LinkedListDeque<Integer> lld = new LinkedListDeque<>();
-		lld.addFirst(1);
-		lld.addFirst(2);
-		lld.addFirst(3);
-		lld.addLast(3);
-		lld.addLast(2);
-		lld.addLast(1);
-		lld.printDeque();
-		System.out.println(lld.size());
+	public void test2() throws Exception {
+		ArrayDeque<Integer> arr = new ArrayDeque<>();
+		for(int i = 0;i < 10;i ++) {
+			arr.addFirst(i);
+		}
 	}
 
 	/** Adds an item, then removes an item, and ensures that dll is empty afterwards. */
