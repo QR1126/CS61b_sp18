@@ -74,10 +74,15 @@ public class LinkedListDequeTest {
 
 	@Test
 	public void test2() {
-		LinkedListDeque<String> lld1 = new LinkedListDeque<String>();
-		lld1.addFirst("front");
-		lld1.addLast("middle");
-
+		LinkedListDeque<Integer> lld = new LinkedListDeque<>();
+		lld.addFirst(1);
+		lld.addFirst(2);
+		lld.addFirst(3);
+		lld.addLast(3);
+		lld.addLast(2);
+		lld.addLast(1);
+		lld.printDeque();
+		System.out.println(lld.size());
 	}
 
 	/** Adds an item, then removes an item, and ensures that dll is empty afterwards. */
