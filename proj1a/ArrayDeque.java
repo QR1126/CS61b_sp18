@@ -16,10 +16,10 @@ public class ArrayDeque<T> {
         length = DEFAULT_CAPACITY;
     }
 
-    public ArrayDeque(int capacity) {
-        this.arr = (T[]) new Object[capacity];
-        length = capacity;
-    }
+//    public ArrayDeque(int capacity) {
+//        this.arr = (T[]) new Object[capacity];
+//        length = capacity;
+//    }
 
     /**Adds an item of type T to the front of the deque.
      * */
