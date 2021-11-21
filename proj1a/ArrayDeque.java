@@ -28,7 +28,7 @@ public class ArrayDeque<T> {
 
     private void resize(int newCapacity) {
         T[] newArr = (T[]) new Object[newCapacity];
-        for (int i = 0;i < arr.length;i++) {
+        for (int i = 0; i < newCapacity; i++) {
             newArr[i] = arr[(head + i) % arr.length];
         }
         this.arr = newArr;
@@ -64,7 +64,7 @@ public class ArrayDeque<T> {
         if (isEmpty()) {
             System.out.println("null");
         } else {
-            for (int i = head;i != tail; ) {
+            for (int i = head; i != tail; ) {
                 System.out.print(arr[i] + " ");
                 i = (i + 1) % length;
             }
@@ -87,8 +87,10 @@ public class ArrayDeque<T> {
         }
     }
 
-    /**Removes and returns the item at the back of the deque. If no such item exists, returns null.*/
-    public T removeLast()  { //Making sure removing from empty deque doesn't give negative size.
+    /**Removes and returns the item at the back of the deque.
+     * If no such item exists, returns null.*/
+    public T removeLast()  {
+        //Making sure removing from empty deque doesn't give negative size.
         if (isEmpty()) {
             return null;
         } else {
@@ -109,7 +111,7 @@ public class ArrayDeque<T> {
             return null;
         } else {
             int cur = head;
-            for (int i = 0;i <= index;i++) {
+            for (int i = 0; i <= index; i++) {
                 cur = (head + i) % length;
             }
             return arr[cur];

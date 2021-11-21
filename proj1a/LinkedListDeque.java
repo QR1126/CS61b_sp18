@@ -2,6 +2,7 @@
 /**
  * @author QR1126
  */
+
 public class LinkedListDeque<T> {
 
     private class Node {
@@ -61,7 +62,8 @@ public class LinkedListDeque<T> {
     public int size() {
         return size;
     }
-   /** Prints the items in the deque from first to last, separated by a space.
+   /** Prints the items in the deque from
+    * first to last, separated by a space.
     * */
     public void printDeque() {
         Node cur = head.next;
@@ -73,7 +75,8 @@ public class LinkedListDeque<T> {
             cur = cur.next;
         }
     }
-   /** Removes and returns the item at the front of the deque. If no such item exists, returns null.
+   /** Removes and returns the item at the front of the deque.
+    * If no such item exists, returns null.
    * */
     public T removeFirst()  {
         if (this.isEmpty()) {
@@ -89,7 +92,8 @@ public class LinkedListDeque<T> {
             return val;
         }
     }
-    /**Removes and returns the item at the back of the deque. If no such item exists, returns null.*/
+    /**Removes and returns the item at the back of the deque.
+     * If no such item exists, returns null.*/
     public T removeLast()  {
         if (this.isEmpty()) {
             return null;
@@ -103,8 +107,10 @@ public class LinkedListDeque<T> {
             return val;
         }
     }
-    /**Gets the item at the given index, where 0 is the front, 1 is the next item,
-     * and so forth. If no such item exists, returns null. Must not alter the deque!*/
+    /**Gets the item at the given index, where 0 is the front,
+     * 1 is the next item,
+     * and so forth. If no such item exists, returns null.
+     * Must not alter the deque!*/
     public T get(int index) {
         if (index >= size || index < 0) {
             return null;
@@ -127,7 +133,7 @@ public class LinkedListDeque<T> {
         return getHelper(index, cnt, node);
     }
 
-    public T getHelper(int index, int cnt, Node node) {
+    private T getHelper(int index, int cnt, Node node) {
         if (index == cnt) {
             return node.val;
         }
