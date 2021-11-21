@@ -8,7 +8,7 @@ public class ArrayDeque<T> {
     private int tail;
     private int size;
     private int length;
-    private final static int DEFAULT_CAPACITY = 8;
+    private static final int DEFAULT_CAPACITY = 8;
 
     public ArrayDeque() {
         this.arr = (T[]) new Object[DEFAULT_CAPACITY];
@@ -16,24 +16,19 @@ public class ArrayDeque<T> {
         length = DEFAULT_CAPACITY;
     }
 
-//    public ArrayDeque(int capacity) {
-//        this.arr = (T[]) new Object[capacity];
-//        length = capacity;
-//    }
-
     /**Adds an item of type T to the front of the deque.
      * */
     public void addFirst(T item) {
         if (size == arr.length) {
-            resize();
+            resize(arr.length << 1);
         }
         arr[head = (head - 1) & (arr.length - 1)] = item;
-        size ++;
+        size++;
     }
 
-    private void resize() {
-        T[] newArr = (T[]) new Object[arr.length << 1];
-        for(int i = 0;i < arr.length;i ++) {
+    private void resize(int newCapacity) {
+        T[] newArr = (T[]) new Object[newCapacity];
+        for (int i = 0;i < arr.length;i++) {
             newArr[i] = arr[(head + i) % arr.length];
         }
         this.arr = newArr;
@@ -45,11 +40,11 @@ public class ArrayDeque<T> {
      * */
     public void addLast(T item) {
         if (size == length) {
-            resize();
+            resize(length << 1);
         }
         arr[tail] = item;
         tail = (tail + 1) % length;
-        size ++;
+        size++;
     }
 
     /**Returns true if deque is empty, false otherwise.
@@ -65,9 +60,9 @@ public class ArrayDeque<T> {
     }
     /** Prints the items in the deque from first to last, separated by a space.
      * */
-    public void printDeque() throws Exception {
+    public void printDeque() {
         if (isEmpty()) {
-            throw new Exception("empty");
+            System.out.println("null");
         } else {
             for (int i = head;i != tail; ) {
                 System.out.print(arr[i] + " ");
@@ -78,20 +73,34 @@ public class ArrayDeque<T> {
     /** Removes and returns the item at the front of the deque. If no such item exists, returns null.
      * */
     public T removeFirst() {
-        T val = arr[head];
-        arr[head] = null;
-        head = (head + 1) & (length - 1);
-        size --;
-        return val;
+        if (isEmpty()) {
+            return null;
+        } else {
+            T val = arr[head];
+            arr[head] = null;
+            head = (head + 1) & (length - 1);
+            size--;
+            if (size == length / 4 && size / 2 != 0) {
+                resize(length >> 1);
+            }
+            return val;
+        }
     }
 
     /**Removes and returns the item at the back of the deque. If no such item exists, returns null.*/
-    public T removeLast()  {
-        T val = arr[tail];
-        arr[tail] = null;
-        tail = tail == 0 ? length - 1 : tail --;
-        size --;
-        return val;
+    public T removeLast()  { //Making sure removing from empty deque doesn't give negative size.
+        if (isEmpty()) {
+            return null;
+        } else {
+            tail = tail == 0 ? length - 1 : tail - 1;
+            T val = arr[tail];
+            arr[tail] = null;
+            size--;
+            if (size == length / 4 && size / 2 != 0) {
+                resize(length >> 1);
+            }
+            return val;
+        }
     }
     /**Gets the item at the given index, where 0 is the front, 1 is the next item,
      * and so forth. If no such item exists, returns null. Must not alter the deque!*/
@@ -100,7 +109,7 @@ public class ArrayDeque<T> {
             return null;
         } else {
             int cur = head;
-            for(int i = 0;i < index;i ++) {
+            for (int i = 0;i <= index;i++) {
                 cur = (head + i) % length;
             }
             return arr[cur];

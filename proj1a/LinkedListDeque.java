@@ -5,9 +5,9 @@
 public class LinkedListDeque<T> {
 
     private class Node {
-        Node prev;
-        Node next;
-        T val;
+        private Node prev;
+        private Node next;
+        private T val;
 
         public Node() {
         }
@@ -38,7 +38,7 @@ public class LinkedListDeque<T> {
         node.prev = head;
         node.next = nxtNode;
         nxtNode.prev = node;
-        size ++;
+        size++;
     }
     /** Adds an item of type T to the back of the deque.
      * */
@@ -49,7 +49,7 @@ public class LinkedListDeque<T> {
         node.next = tail;
         node.prev = preNode;
         preNode.next = node;
-        size ++;
+        size++;
     }
     /**Returns true if deque is empty, false otherwise.
      * */
@@ -76,34 +76,32 @@ public class LinkedListDeque<T> {
    /** Removes and returns the item at the front of the deque. If no such item exists, returns null.
    * */
     public T removeFirst()  {
-        Node node = head.next;
-        if (node == tail) {
-            try {
-                throw new Exception("This list is null");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        if (this.isEmpty()) {
+            return null;
+        } else {
+            Node node = head.next;
+            T val = node.val;
+            Node nxtNode = node.next;
+            head.next = nxtNode;
+            nxtNode.prev = head;
+            //node = null;
+            size--;
+            return val;
         }
-        T val = node.val;
-        Node nxtNode = node.next;
-        head.next = nxtNode;
-        nxtNode.prev = head;
-        //node = null;
-        size --;
-        return val;
     }
     /**Removes and returns the item at the back of the deque. If no such item exists, returns null.*/
-    public T removeLast() throws Exception {
-        Node node = tail.prev;
-        if (node == head) {
-            throw new Exception("This list is null");
+    public T removeLast()  {
+        if (this.isEmpty()) {
+            return null;
+        } else {
+            Node node = tail.prev;
+            T val = node.val;
+            Node preNode = node.prev;
+            tail.prev = preNode;
+            preNode.next = tail;
+            size--;
+            return val;
         }
-        T val = node.val;
-        Node preNode = node.prev;
-        tail.prev = preNode;
-        preNode.next = tail;
-        size --;
-        return val;
     }
     /**Gets the item at the given index, where 0 is the front, 1 is the next item,
      * and so forth. If no such item exists, returns null. Must not alter the deque!*/
@@ -115,7 +113,7 @@ public class LinkedListDeque<T> {
         Node cur = head.next;
         while (cnt < index) {
             cur = cur.next;
-            cnt ++;
+            cnt++;
         }
         return cur.val;
     }
@@ -130,7 +128,7 @@ public class LinkedListDeque<T> {
     }
 
     public T getHelper(int index, int cnt, Node node) {
-        if(index == cnt) {
+        if (index == cnt) {
             return node.val;
         }
         return getHelper(index, cnt + 1, node.next);
