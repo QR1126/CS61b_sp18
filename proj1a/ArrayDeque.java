@@ -28,10 +28,11 @@ public class ArrayDeque<T> {
 
     private void resize(int newCapacity) {
         T[] newArr = (T[]) new Object[newCapacity];
-        for (int i = 0; i < newCapacity; i++) {
+        for (int i = 0; i < size; i++) {
             newArr[i] = arr[(head + i) % arr.length];
         }
         this.arr = newArr;
+        length = newCapacity;
         head = 0;
         tail = size;
     }
@@ -70,7 +71,8 @@ public class ArrayDeque<T> {
             }
         }
     }
-    /** Removes and returns the item at the front of the deque. If no such item exists, returns null.
+    /** Removes and returns the item at the front of the deque.
+     * If no such item exists, returns null.
      * */
     public T removeFirst() {
         if (isEmpty()) {
