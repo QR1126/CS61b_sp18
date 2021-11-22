@@ -36,11 +36,10 @@ public class Palindrome {
         if (word.length() == 1 || word.length() == 0) {
             return true;
         }
-        OffByOne off = new OffByOne();
         Deque<Character> deque = wordToDeque(word);
         int n = deque.size();
         for (int i = 0, j = n - 1; i < j; i++, j--) {
-            if (!off.equalChars(deque.get(i), deque.get(j))) {
+            if (!cc.equalChars(deque.get(i), deque.get(j))) {
                 return false;
             }
         }

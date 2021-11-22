@@ -10,10 +10,11 @@ public class TestOffByOne {
     @Test
     public void testOffByOne() {
         System.out.println(offByOne.equalChars('a', 'b'));
-        System.out.println(offByOne.equalChars('b', 'a'));
+        System.out.println(offByOne.equalChars('B', 'a'));
         System.out.println(offByOne.equalChars('a', 'a'));
         System.out.println(offByOne.equalChars('&', '%'));
     }
+
     // Your tests go here.
     //Uncomment this class once you've created your CharacterComparator interface and OffByOne class.
 }
