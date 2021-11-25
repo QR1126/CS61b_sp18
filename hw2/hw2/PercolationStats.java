@@ -7,7 +7,7 @@ import edu.princeton.cs.introcs.StdStats;
  * @author QR1126
  */
 public class PercolationStats {
-    private int[] thresholds;
+    private double[] thresholds;
     private double avg;
     private double var;
     private int T;
@@ -17,7 +17,7 @@ public class PercolationStats {
         if (N <= 0 || T <= 0) {
             throw new IllegalArgumentException();
         }
-        this.thresholds = new int[T];
+        this.thresholds = new double[T];
         this.T = T;
         int index = 0;
         while (T-- > 0) {
@@ -27,7 +27,7 @@ public class PercolationStats {
                 int col = StdRandom.uniform(N);
                 percolation.open(row, col);
             }
-            thresholds[index++] = percolation.numberOfOpenSites();
+            thresholds[index++] = (double) percolation.numberOfOpenSites() / N * N;
         }
     }
 
