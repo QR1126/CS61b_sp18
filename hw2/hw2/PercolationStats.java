@@ -27,7 +27,7 @@ public class PercolationStats {
                 int col = StdRandom.uniform(N);
                 percolation.open(row, col);
             }
-            thresholds[index++] = (double) (percolation.numberOfOpenSites() / (N * N));
+            thresholds[index++] = (double) ((double) percolation.numberOfOpenSites() / (N * N * 1.0));
         }
     }
 
