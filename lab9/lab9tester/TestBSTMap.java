@@ -54,6 +54,7 @@ public class TestBSTMap {
     @Test
     public void sanityGetTest() {
         BSTMap<String, Integer> b = new BSTMap<String, Integer>();
+        Integer res = b.get("starChild");
         assertEquals(null, b.get("starChild"));
         assertEquals(0, b.size());
         b.put("starChild", 5);
