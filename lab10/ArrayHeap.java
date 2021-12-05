@@ -149,7 +149,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
             resize(contents.length * 2);
         }
         size++;
-        contents[size] = new Node(item, priority);
+        contents[size] = new ArrayHeap<T>.Node(item, priority);
         swim(size);
     }
 
@@ -159,6 +159,9 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     @Override
     public T peek() {
+        if (size == 0) {
+            return null;
+        }
         return contents[1].myItem;
     }
 
@@ -173,9 +176,15 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     @Override
     public T removeMin() {
+        if (size == 0) {
+            return null;
+        }
         T res = contents[1].myItem;
         swap(1, size);
-        size--;
+        contents[size--] = null;
+        if (size == 0) {
+            return res;
+        }
         sink(1);
         return res;
     }
@@ -199,13 +208,11 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     @Override
     public void changePriority(T item, double priority) {
-        Node node = new Node(item, priority);
         for (int i = 1; i <= size; i++) {
-            if (contents[i].equals(node)) {
+            if (contents[i].myItem.equals(item)) {
                 contents[i].myPriority = priority;
                 swim(i);
                 sink(i);
-                break;
             }
         }
     }
