@@ -5,6 +5,15 @@ import java.util.Observable;
 /**
  * @author Josh Hug
  */
+
+
+/** public boolean[] marked: Locations to mark in blue
+    public int[] distTo: Distances to draw over the Maze
+    public int[] edgeTo: Edges to draw on Maze
+    public Maze maze: The maze being solved
+    public void announce(): Call whenever you want the drawing updated
+    public solve(): Solves the given Maze problem
+ */
 public abstract class MazeExplorer extends Observable {
     protected int[] distTo;
     protected int[] edgeTo;
