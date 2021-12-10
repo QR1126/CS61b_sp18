@@ -6,7 +6,10 @@ import java.util.*;
 
 public class Solver {
     MinPQ<SearchNode> pq;
-    List<WorldState> list;
+    //we can use the prev to travel the solution
+    List<WorldState> res;
+    //note that the parent SearchNode should add to the pq again
+    Set<WorldState> vis;
     SearchNode init;
     SearchNode target;
 
@@ -36,10 +39,12 @@ public class Solver {
                 return a - b;
             }
         });
-        list = new LinkedList<>();
+        vis = new HashSet<>();
         init = new SearchNode(initial, 0, null);
+
         pq.insert(init);
-        list.add(init.worldState);
+        vis.add(initial);
+
 
         while (!pq.isEmpty()) {
             SearchNode node = pq.delMin();
@@ -48,9 +53,10 @@ public class Solver {
                 return;
             }
             for (WorldState neighbor : node.worldState.neighbors()) {
-                SearchNode nNode = new SearchNode(neighbor, node.dis + 1, node);
-                pq.insert(nNode);
-                list.add(nNode.worldState);
+                if (vis.add(neighbor)) {
+                    SearchNode nNode = new SearchNode(neighbor, node.dis + 1, node);
+                    pq.insert(nNode);
+                }
             }
         }
     }
@@ -66,6 +72,12 @@ public class Solver {
      to the solution.
      **/
     public Iterable<WorldState> solution() {
-        return list;
+        res = new ArrayList<>();
+        while (target != null) {
+            res.add(target.worldState);
+            target = target.prev;
+        }
+        Collections.reverse(res);
+        return res;
     }
 }
