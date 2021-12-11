@@ -8,10 +8,16 @@ public class Solver {
     MinPQ<SearchNode> pq;
     //we can use the prev to travel the solution
     List<WorldState> res;
-    //note that the parent SearchNode should add to the pq again
-    Set<WorldState> vis;
+    /**Note that the parent SearchNode should not add to the pq again
+     * But The key issue is that you shouldn’t consider a state to be “used” until it is dequeued.
+     * In other words, if you DO attempt to do this,
+     * you should only “mark” a WorldState when it is dequeued from the PQ,
+     * not when it is enqueued!
+     * */
+//    Set<WorldState> vis;
     SearchNode init;
     SearchNode target;
+    Map<WorldState, Integer> memory;
 
     private class SearchNode {
         private WorldState worldState;
@@ -39,24 +45,20 @@ public class Solver {
                 return a - b;
             }
         });
-        vis = new HashSet<>();
         init = new SearchNode(initial, 0, null);
-
         pq.insert(init);
-        vis.add(initial);
-
 
         while (!pq.isEmpty()) {
             SearchNode node = pq.delMin();
+            SearchNode prevNode = node.prev;
             if (node.worldState.isGoal()) {
                 target = node;
                 return;
             }
             for (WorldState neighbor : node.worldState.neighbors()) {
-                if (vis.add(neighbor)) {
-                    SearchNode nNode = new SearchNode(neighbor, node.dis + 1, node);
-                    pq.insert(nNode);
-                }
+                if (prevNode != null && neighbor.equals(prevNode.worldState)) continue;
+                SearchNode nNode = new SearchNode(neighbor, node.dis + 1, node);
+                pq.insert(nNode);
             }
         }
     }
