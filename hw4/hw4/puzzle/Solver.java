@@ -39,32 +39,32 @@ public class Solver {
     public Solver(WorldState initial) {
         memory = new HashMap<>();
         pq = new MinPQ<>(new Comparator<SearchNode>() {
-            private int getDis(SearchNode node) {
-                if (!memory.containsKey(node)) {
-                    memory.put(node.worldState, node.worldState.estimatedDistanceToGoal());
-                }
-                return memory.get(node.worldState);
-            }
-
             @Override
             public int compare(SearchNode o1, SearchNode o2) {
                 int a = o1.dis + getDis(o1);
                 int b = o2.dis + getDis(o2);
                 return a - b;
             }
+
+            private int getDis(SearchNode node) {
+                if (!memory.containsKey(node)) {
+                    memory.put(node.worldState, node.worldState.estimatedDistanceToGoal());
+                }
+                return memory.get(node.worldState);
+            }
         });
         init = new SearchNode(initial, 0, null);
         pq.insert(init);
 
         while (!pq.isEmpty()) {
-            SearchNode nowNode = pq.delMin();
-            if (nowNode.worldState.isGoal()) {
-                target = new SearchNode(nowNode.worldState, nowNode.dis, nowNode.prev);
+            SearchNode currNode = pq.delMin();
+            if (currNode.worldState.isGoal()) {
+                target = new SearchNode(currNode.worldState, currNode.dis, currNode.prev);
                 break;
             }
-            for (WorldState neighbor : nowNode.worldState.neighbors()) {
-                if (nowNode.prev != null && neighbor.equals(nowNode.prev.worldState)) continue;
-                SearchNode nNode = new SearchNode(neighbor, nowNode.dis + 1, nowNode);
+            for (WorldState neighbor : currNode.worldState.neighbors()) {
+                if (currNode.prev != null && neighbor.equals(currNode.prev.worldState)) continue;
+                SearchNode nNode = new SearchNode(neighbor, currNode.dis + 1, currNode);
                 pq.insert(nNode);
             }
         }
