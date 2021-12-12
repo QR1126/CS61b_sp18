@@ -1,5 +1,7 @@
 package hw3.hash;
 import java.awt.Color;
+
+import edu.princeton.cs.algs4.GREP;
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdDraw;
 
@@ -11,9 +13,7 @@ public class SimpleOomage implements Oomage {
 
     private static final double WIDTH = 0.01;
     private static final boolean USE_PERFECT_HASH = true;
-    private static final int p = 131;
-    private static final int pp = 13331;
-    private static final int ppp = 1333331;
+
 
     @Override
     public boolean equals(Object o) {
@@ -34,10 +34,10 @@ public class SimpleOomage implements Oomage {
         if (!USE_PERFECT_HASH) {
             return red + green + blue;
         } else {
-            red/=5;
-            green/=5;
-            blue/=5;
-            return red * p + green * pp + blue * ppp;
+            int res = Integer.hashCode(red/5);
+            res = res * 133 + Integer.hashCode(green/5);
+            res = res * 13331 + Integer.hashCode(blue/5);
+            return res;
         }
     }
 
