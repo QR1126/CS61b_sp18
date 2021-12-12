@@ -161,25 +161,23 @@ public class Board implements WorldState{
 
     @Override
     public boolean equals(Object y) {
-        if (y != null) {
-           if (this == y) {
-               return true;
-           }
-           if (y instanceof Board) {
-               Board yy = (Board) y;
-               int n = yy.N;
-               if (n != this.N) {
-                   return false;
-               }
-               for (int i = 0; i < n; i++) {
-                   for(int j = 0; j < n; j++) {
-                       if (yy.init[i][j] != this.init[i][j]) {
-                           return false;
-                       }
-                   }
-               }
-               return true;
-           }
+        if (y == null) {
+            return false;
+        }
+        if (y instanceof Board) {
+            Board yy = (Board) y;
+            int n = size();
+            if (yy.size() != n) {
+                return false;
+            }
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (yy.init[i][j] != init[i][j]) {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
         return false;
     }

@@ -57,30 +57,18 @@ public class Solver {
         pq.insert(init);
 
         while (!pq.isEmpty()) {
-            SearchNode currNode = pq.delMin();
-            if (currNode.worldState.isGoal()) {
-                target = currNode;
+            SearchNode nowNode = pq.delMin();
+            if (nowNode.worldState.isGoal()) {
+                target = new SearchNode(nowNode.worldState, nowNode.dis, nowNode.prev);
                 break;
             }
-            for (WorldState neighbor : currNode.worldState.neighbors()) {
-                if (currNode.prev != null && neighbor.equals(currNode.prev.worldState)) continue;
-                SearchNode nNode = new SearchNode(neighbor, currNode.dis + 1, currNode);
+            for (WorldState neighbor : nowNode.worldState.neighbors()) {
+                if (nowNode.prev != null && neighbor.equals(nowNode.prev.worldState)) continue;
+                SearchNode nNode = new SearchNode(neighbor, nowNode.dis + 1, nowNode);
                 pq.insert(nNode);
             }
         }
-    }
 
-    /**Returns the minimum number of moves to solve the puzzle starting
-     at the initial WorldState.
-     * */
-    public int moves() {
-        return target.dis;
-    }
-
-    /**Returns a sequence of WorldStates from the initial WorldState
-     to the solution.
-     **/
-    public Iterable<WorldState> solution() {
         solution = new ArrayList<>();
         Stack<WorldState> stk = new Stack<>();
         while (target != null) {
@@ -90,6 +78,19 @@ public class Solver {
         while (!stk.isEmpty()) {
             solution.add(stk.pop());
         }
+    }
+
+    /**Returns the minimum number of moves to solve the puzzle starting
+     at the initial WorldState.
+     * */
+    public int moves() {
+        return solution.size() - 1;
+    }
+
+    /**Returns a sequence of WorldStates from the initial WorldState
+     to the solution.
+     **/
+    public Iterable<WorldState> solution() {
         return solution;
     }
 }
