@@ -1,7 +1,10 @@
 package hw4.puzzle;
 
 
-import java.util.*;
+import edu.princeton.cs.algs4.Queue;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Board implements WorldState{
 
@@ -21,7 +24,7 @@ public class Board implements WorldState{
 
     private int[][] init;
     private int[][] goal;
-    Map<Integer, int[]> map;
+    private Map<Integer, int[]> map;
     private int N;
     private final static int BLANK = 0;
 
@@ -32,7 +35,7 @@ public class Board implements WorldState{
 
     @Override
     public Iterable<WorldState> neighbors() {
-        Queue<WorldState> q = new LinkedList<>();
+        Queue<WorldState> q = new Queue<>();
         int n = size();
         int xBlank = -1;
         int yBlank = -1;
@@ -56,7 +59,7 @@ public class Board implements WorldState{
                     neighbor[xBlank][yBlank] = neighbor[i][j];
                     neighbor[i][j] = BLANK;
                     Board ng = new Board(neighbor);
-                    q.add(ng);
+                    q.enqueue(ng);
                     neighbor[i][j] = neighbor[xBlank][yBlank];
                     neighbor[xBlank][yBlank] = BLANK;
                 }
@@ -101,10 +104,11 @@ public class Board implements WorldState{
         int dis = 0;
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                if (i != N-1 && j != N-1) {
-                    if (init[i][j] != goal[i][j]) {
-                        dis++;
-                    }
+                if (init[i][j] == BLANK) {
+                    continue;
+                }
+                if (init[i][j] != xyTo1D(i, j)) {
+                    dis++;
                 }
             }
         }
@@ -115,7 +119,8 @@ public class Board implements WorldState{
         int dis = 0;
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                if (init[i][j] != goal[i][j] && init[i][j] != 0) {
+                if (init[i][j] == BLANK) continue;
+                if (init[i][j] != goal[i][j]) {
                     int val = init[i][j];
                     int[] pos = map.get(val);
                     dis+=Math.abs(i - pos[0]) + Math.abs(j - pos[1]);
@@ -125,6 +130,36 @@ public class Board implements WorldState{
         return dis;
     }
 
+//    public int manhattan() {
+//        int dis = 0;
+//        for (int i = 0; i < N; i++) {
+//            for (int j = 0; j < N; j++) {
+//                if (init[i][j] == BLANK) continue;
+//                if (init[i][j] != goal[i][j]) {
+//                    dis+= getDis(init[i][j], i, j);
+//                }
+//            }
+//        }
+//        return dis;
+//    }
+
+    private int xyTo1D(int i, int j) {
+        return i * N + j + 1;
+    }
+
+    private int[] intToXY(int val) {
+        return new int[]{ (val - 1)/N, (val - 1) % N };
+    }
+
+    private int getDis(int val, int i, int j) {
+        int res = 0;
+        int[] pos = intToXY(val);
+        res+=Math.abs(i - pos[0]);
+        res+=Math.abs(j - pos[1]);
+        return res;
+    }
+
+    @Override
     public boolean equals(Object y) {
         if (y != null) {
            if (this == y) {
@@ -151,6 +186,7 @@ public class Board implements WorldState{
 
     /** Returns the string representation of the board.
       * Uncomment this method. */
+    @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
         int N = size();
@@ -165,4 +201,10 @@ public class Board implements WorldState{
         return s.toString();
     }
 
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }
+
+

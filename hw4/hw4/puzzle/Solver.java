@@ -5,9 +5,9 @@ import edu.princeton.cs.algs4.MinPQ;
 import java.util.*;
 
 public class Solver {
-    MinPQ<SearchNode> pq;
+    private MinPQ<SearchNode> pq;
     //we can use the prev to travel the solution
-    List<WorldState> res;
+    private List<WorldState> solution;
     /**Note that the parent SearchNode should not add to the pq again
      * But The key issue is that you shouldn’t consider a state to be “used” until it is dequeued.
      * In other words, if you DO attempt to do this,
@@ -15,9 +15,9 @@ public class Solver {
      * not when it is enqueued!
      * */
 //    Set<WorldState> vis;
-    SearchNode init;
-    SearchNode target;
-    Map<WorldState, Integer> memory;
+    private SearchNode init;
+    private SearchNode target;
+    private Map<WorldState, Integer> memory;
 
     private class SearchNode {
         private WorldState worldState;
@@ -37,11 +37,19 @@ public class Solver {
      puzzle using the A* algorithm. Assumes a solution exists.
      * */
     public Solver(WorldState initial) {
+        memory = new HashMap<>();
         pq = new MinPQ<>(new Comparator<SearchNode>() {
+            private int getDis(SearchNode node) {
+                if (!memory.containsKey(node)) {
+                    memory.put(node.worldState, node.worldState.estimatedDistanceToGoal());
+                }
+                return memory.get(node.worldState);
+            }
+
             @Override
             public int compare(SearchNode o1, SearchNode o2) {
-                int a = o1.dis + o1.worldState.estimatedDistanceToGoal();
-                int b = o2.dis + o2.worldState.estimatedDistanceToGoal();
+                int a = o1.dis + getDis(o1);
+                int b = o2.dis + getDis(o2);
                 return a - b;
             }
         });
@@ -49,15 +57,14 @@ public class Solver {
         pq.insert(init);
 
         while (!pq.isEmpty()) {
-            SearchNode node = pq.delMin();
-            SearchNode prevNode = node.prev;
-            if (node.worldState.isGoal()) {
-                target = node;
-                return;
+            SearchNode currNode = pq.delMin();
+            if (currNode.worldState.isGoal()) {
+                target = currNode;
+                break;
             }
-            for (WorldState neighbor : node.worldState.neighbors()) {
-                if (prevNode != null && neighbor.equals(prevNode.worldState)) continue;
-                SearchNode nNode = new SearchNode(neighbor, node.dis + 1, node);
+            for (WorldState neighbor : currNode.worldState.neighbors()) {
+                if (currNode.prev != null && neighbor.equals(currNode.prev.worldState)) continue;
+                SearchNode nNode = new SearchNode(neighbor, currNode.dis + 1, currNode);
                 pq.insert(nNode);
             }
         }
@@ -74,12 +81,16 @@ public class Solver {
      to the solution.
      **/
     public Iterable<WorldState> solution() {
-        res = new ArrayList<>();
+        solution = new ArrayList<>();
+        Stack<WorldState> stk = new Stack<>();
         while (target != null) {
-            res.add(target.worldState);
+            stk.push(target.worldState);
             target = target.prev;
         }
-        Collections.reverse(res);
-        return res;
+        while (!stk.isEmpty()) {
+            solution.add(stk.pop());
+        }
+        return solution;
     }
 }
+

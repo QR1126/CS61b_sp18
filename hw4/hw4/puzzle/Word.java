@@ -1,7 +1,5 @@
 package hw4.puzzle;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -12,7 +10,7 @@ public class Word implements WorldState {
     private static final String WORDFILE = "input/words10000.txt";
     private final String word;
     private final String goal;
-    private Map<StringBuffer, Integer> memory;
+
 
     /**
      * Reads the wordfile specified by the wordfile variable.
@@ -45,7 +43,6 @@ public class Word implements WorldState {
 
         word = w;
         goal = g;
-        memory = new HashMap<>();
     }
 
     /**
@@ -74,28 +71,11 @@ public class Word implements WorldState {
         return costs[b.length()];
     }
 
-
-//    @Override
-//    public Iterable<WorldState> neighbors() {
-//        Set<WorldState> neighbs = new HashSet<>();
-//        for (String s : words) {
-//            if (editDistance(this.word, s) == 1) {
-//                neighbs.add(new Word(s, goal));
-//            }
-//        }
-//        return neighbs;
-//    }
-
     @Override
     public Iterable<WorldState> neighbors() {
         Set<WorldState> neighbs = new HashSet<>();
         for (String s : words) {
-            StringBuffer sb = new StringBuffer(this.word + s);
-            if (!memory.containsKey(sb)) {
-                int dis = editDistance(this.word, s);
-                memory.put(sb, dis);
-            }
-            if (memory.get(sb) == 1) {
+            if (editDistance(this.word, s) == 1) {
                 neighbs.add(new Word(s, goal));
             }
         }
