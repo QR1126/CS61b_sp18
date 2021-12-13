@@ -1,6 +1,18 @@
 import edu.princeton.cs.algs4.Queue;
 
+import java.util.Iterator;
+
 public class MergeSort {
+
+    public static void main(String[] args) {
+        Queue<String> students = new Queue<String>();
+        students.enqueue("Alice");
+        students.enqueue("Vanessa");
+        students.enqueue("Ethan");
+        Queue<String> res = mergeSort(students);
+        System.out.println(res);
+    }
+
     /**
      * Removes and returns the smallest item that is in q1 or q2.
      *
@@ -11,8 +23,7 @@ public class MergeSort {
      * @param   q2  A Queue in sorted order from least to greatest.
      * @return      The smallest item that is in q1 or q2.
      */
-    private static <Item extends Comparable> Item getMin(
-            Queue<Item> q1, Queue<Item> q2) {
+    private static <Item extends Comparable> Item getMin(Queue<Item> q1, Queue<Item> q2) {
         if (q1.isEmpty()) {
             return q2.dequeue();
         } else if (q2.isEmpty()) {
@@ -33,9 +44,16 @@ public class MergeSort {
 
     /** Returns a queue of queues that each contain one item from items. */
     private static <Item extends Comparable> Queue<Queue<Item>>
-            makeSingleItemQueues(Queue<Item> items) {
-        // Your code here!
-        return null;
+                    makeSingleItemQueues(Queue<Item> items) {
+        Queue<Queue<Item>> res = new Queue<>();
+        Iterator<Item> iterator = items.iterator();
+        while (iterator.hasNext()) {
+            Item item = iterator.next();
+            Queue<Item> q = new Queue<>();
+            q.enqueue(item);
+            res.enqueue(q);
+        }
+        return res;
     }
 
     /**
@@ -53,14 +71,28 @@ public class MergeSort {
      */
     private static <Item extends Comparable> Queue<Item> mergeSortedQueues(
             Queue<Item> q1, Queue<Item> q2) {
-        // Your code here!
-        return null;
+        Queue<Item> res = new Queue<>();
+        while (!q1.isEmpty() || !q2.isEmpty()) {
+            res.enqueue(getMin(q1, q2));
+        }
+        return res;
     }
 
-    /** Returns a Queue that contains the given items sorted from least to greatest. */
+    /** Returns a Queue that contains the given items sorted from least to greatest.
+        Top-Down merge sorting N items:
+        1.Split items into 2 roughly even pieces.
+        2.Mergesort each half (steps not shown, this is a recursive algorithm!)
+        3.Merge the two sorted halves to form the final result.
+     */
     public static <Item extends Comparable> Queue<Item> mergeSort(
             Queue<Item> items) {
-        // Your code here!
-        return items;
+        Queue<Queue<Item>> queues = makeSingleItemQueues(items);
+        while (queues.size() > 1) {
+            Queue<Item> q1 = queues.dequeue();
+            Queue<Item> q2 = queues.dequeue();
+            Queue<Item> queue = mergeSortedQueues(q1, q2);
+            queues.enqueue(queue);
+        }
+        return queues.dequeue();
     }
 }
