@@ -11,6 +11,12 @@ public class MergeSort {
         students.enqueue("Ethan");
         Queue<String> res = mergeSort(students);
         System.out.println(res);
+
+        Queue<Integer> q = new Queue<>();
+        for (int i =10; i > 0; i--) {
+            q.enqueue(i);
+        }
+        System.out.println(mergeSort(q));
     }
 
     /**
