@@ -8,6 +8,23 @@ import java.util.Comparator;
  *
  */
 public class RadixSort {
+
+    public static void main(String[] args) {
+        String[] asciis = new String[] { "56", "112", "94", "4", "9", "82", "394", "80" };
+        String[] res = RadixSort.sort(asciis);
+        for (String s : res) {
+            System.out.print(s + " ");
+        }
+
+        System.out.println();
+
+        String[] asciis2 = new String[] {"  ", "      ", "    ", " "};
+        String[] res2 = RadixSort.sort(asciis2);
+        for (String s : res2) {
+            System.out.print(s + ",");
+        }
+    }
+
     /**
      * Does LSD radix sort on the passed in array with the following restrictions:
      * The array can only have ASCII Strings (sequence of 1 byte characters)
@@ -24,12 +41,7 @@ public class RadixSort {
         for (String s : str) {
             numDigits = Math.max(numDigits, s.length());
         }
-        for (String s : str) {
-            while (s.length() < numDigits) {
-                s = s + "_";
-            }
-        }
-        for (int i = 0; i < numDigits - 1; i++) {
+        for (int i = numDigits - 1; i >= 0; i--) {
             sortHelperLSD(str, i);
         }
         return str;
@@ -42,16 +54,39 @@ public class RadixSort {
      * @param index The position to sort the Strings on.
      */
     private static void sortHelperLSD(String[] asciis, int index) {
-        Arrays.sort(asciis, new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                if (o1.charAt(index) == '_' && o2.charAt(index) != '_') return 1;
-                else if (o1.charAt(index) != '_' && o2.charAt(index) == '_') return -1;
-                return o1.charAt(index) - o2.charAt(index);
-            }
-        });
-        return;
+        int R = 256;
+        int pos =0;
+        int[] counts = new int[R + 1];
+        int[] starts = new int[R + 1];
+        String[] sort = new String[asciis.length];
+        for (String s : asciis) {
+            int i = charAt(s, index);
+            counts[i]++;
+        }
+        for (int i = 0; i < R + 1; i++) {
+            starts[i] = pos;
+            pos+=counts[i];
+        }
+        for (int i = 0; i < asciis.length; i++) {
+            String item = asciis[i];
+            int c = charAt(item,index);
+            int place = starts[c];
+            sort[place] = item;
+            starts[c]++;
+        }
+        for (int i = 0; i < asciis.length; i++) {
+            asciis[i] = sort[i];
+        }
     }
+
+    private static int charAt(String str, int index) {
+        if (index >= 0 && index < str.length()) {
+            return str.charAt(index) + 1;
+        } else {
+            return 0;
+        }
+    }
+
 
     /**
      * MSD radix sort helper function that recursively calls itself to achieve the sorted array.
