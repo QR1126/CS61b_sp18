@@ -70,39 +70,32 @@ public class CountingSort {
     public static int[] betterCountingSort(int[] arr) {
         int min = Integer.MAX_VALUE;
         int max = Integer.MIN_VALUE;
-        int n = arr.length;
-        //find min
+
+        //find min and max
         for (int v : arr) {
             min = min < v ? min : v;
-        }
-        int[] sorted = new int[n];
-        int[] tmp = new int[n];
-        for (int i = 0; i < n; i++) {
-            tmp[i] = arr[i] - min;
-        }
-        for (int v : tmp) {
             max = max > v ? max : v;
         }
+
         // gather all the counts for each value
-        int[] counts = new int[max + 1];
-        for (int i : tmp) {
-            counts[i]++;
+        int[] counts = new int[max - min + 1];
+        for (int i : arr) {
+            counts[i - min]++;
         }
-
-        int[] starts = new int[max + 1];
+        int[] starts = new int[max - min + 1];
         int pos = 0;
-        for (int i = 0; i < starts.length; i++) {
+        for (int i = 0; i < starts.length; i += 1) {
             starts[i] = pos;
-            pos+=counts[i];
+            pos += counts[i];
         }
 
-        for (int i = 0; i < tmp.length; i++) {
-            int item = tmp[i];
-            int place = starts[item];
-            sorted[place] = item - min;
-            starts[item] += 1;
+        int[] sorted = new int[arr.length];
+        for (int i = 0; i < arr.length; i += 1) {
+            int item = arr[i];
+            int place = starts[item - min];
+            sorted[place] = item;
+            starts[item - min]++;
         }
-
         return sorted;
     }
 }

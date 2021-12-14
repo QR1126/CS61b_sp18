@@ -19,14 +19,14 @@ public class RadixSort {
      * @return String[] the sorted array
      */
     public static String[] sort(String[] asciis) {
-        String[] str = asciis;
+        String[] str = Arrays.copyOf(asciis, asciis.length);
         int numDigits = 0;
         for (String s : str) {
             numDigits = Math.max(numDigits, s.length());
         }
         for (String s : str) {
             while (s.length() < numDigits) {
-                s = s + ' ';
+                s = s + "_";
             }
         }
         for (int i = 0; i < numDigits; i++) {
@@ -45,8 +45,8 @@ public class RadixSort {
         Arrays.sort(asciis, new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
-                if (o1.charAt(index) == ' ' && o2.charAt(index) != ' ') return 1;
-                else if (o1.charAt(index) != ' ' && o2.charAt(index) == ' ') return -1;
+                if (o1.charAt(index) == '_' && o2.charAt(index) != '_') return 1;
+                else if (o1.charAt(index) != '_' && o2.charAt(index) == '_') return -1;
                 return o1.charAt(index) - o2.charAt(index);
             }
         });
