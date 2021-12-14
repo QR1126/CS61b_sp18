@@ -1,3 +1,6 @@
+import java.util.Arrays;
+import java.util.Comparator;
+
 /**
  * Class for doing Radix sort
  *
@@ -16,8 +19,20 @@ public class RadixSort {
      * @return String[] the sorted array
      */
     public static String[] sort(String[] asciis) {
-        // TODO: Implement LSD Sort
-        return null;
+        String[] str = asciis;
+        int numDigits = 0;
+        for (String s : str) {
+            numDigits = Math.max(numDigits, s.length());
+        }
+        for (String s : str) {
+            while (s.length() < numDigits) {
+                s = s + ' ';
+            }
+        }
+        for (int i = 0; i < numDigits; i++) {
+            sortHelperLSD(str, i);
+        }
+        return str;
     }
 
     /**
@@ -27,7 +42,14 @@ public class RadixSort {
      * @param index The position to sort the Strings on.
      */
     private static void sortHelperLSD(String[] asciis, int index) {
-        // Optional LSD helper method for required LSD radix sort
+        Arrays.sort(asciis, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                if (o1.charAt(index) == ' ' && o2.charAt(index) != ' ') return 1;
+                else if (o1.charAt(index) != ' ' && o2.charAt(index) == ' ') return -1;
+                return o1.charAt(index) - o2.charAt(index);
+            }
+        });
         return;
     }
 
