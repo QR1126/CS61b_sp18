@@ -29,7 +29,7 @@ public class RadixSort {
                 s = s + "_";
             }
         }
-        for (int i = 0; i < numDigits; i++) {
+        for (int i = 0; i < numDigits - 1; i++) {
             sortHelperLSD(str, i);
         }
         return str;
