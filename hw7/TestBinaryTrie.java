@@ -49,7 +49,7 @@ public class TestBinaryTrie {
 
         BitSequence shouldBeE = new BitSequence("11000110001");
         m = trie.longestPrefixMatch(shouldBeE);
-        assertEquals((char) 'e', (char) m.getSymbol()); 
+        assertEquals((char) 'e', (char) m.getSymbol());
         BitSequence justE = new BitSequence("11");
         assertEquals(justE, m.getSequence());
 
