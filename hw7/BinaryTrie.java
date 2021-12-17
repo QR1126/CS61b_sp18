@@ -7,11 +7,11 @@ import org.w3c.dom.Node;
 
 public class BinaryTrie implements Serializable {
     private Node root;
-    Map<Character, BitSequence> map = new HashMap<>();
+    private Map<Character, BitSequence> map = new HashMap<>();
     private final static int LEFT = 0;
     private final static int RIGHT = 1;
 
-    private static class Node implements Comparable<Node> {
+    private static class Node implements Comparable<Node> , Serializable{
         private char ch;
         private int freq;
         private Node left;
