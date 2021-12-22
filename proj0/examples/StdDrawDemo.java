@@ -9,6 +9,8 @@
  *   http://introcs.cs.princeton.edu/java/15inout/javadoc/StdDraw.html
  */
 
+import edu.princeton.cs.introcs.StdRandom;
+
 public class StdDrawDemo {
 	public static String imageToDraw = "advice.png";
 
